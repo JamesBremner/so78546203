@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <wex.h>
-#include "cStarterGUI.h"
 
 class cRelation
 {
@@ -16,6 +14,37 @@ public:
     cRelation(
         int A,
         int B,
+        int rel);
+};
+
+class cInstance
+{
+public:
+
+    void generate1();   // generate test case
+    void solve();       // solve the problem
+    void show();        // show the solution
+
+private:
+
+    std::vector<std::string> vPersons;
+    std::vector<cRelation> vRelations;
+    std::vector<int> vInvited;
+
+    void clear();
+    void add(
+        const std::string &A,
+        const std::string &B,
+        int rel);
+    int find(const std::string &name);
+    void inviteOnValid(int ip);
+    bool isValid1or2(int a, int b, const std::vector<int> &test);
+    bool isValid3(int a, int b, const std::vector<int> &test);
+};
+
+    cRelation::cRelation(
+        int A,
+        int B,
         int rel)
         : myA(A), myB(B), myR(rel)
     {
@@ -24,31 +53,6 @@ public:
         if (rel == 2)
             myR = 1;
     }
-};
-
-class cInstance
-{
-public:
-    std::vector<std::string> vPersons;
-    std::vector<cRelation> vRelations;
-    std::vector<int> vInvited;
-
-    void clear();
-    void generate1();
-    void add(
-        const std::string &A,
-        const std::string &B,
-        int rel);
-    int find(const std::string &name);
-    void inviteOnValid(int ip);
-    void solve();
-    void show();
-
-private:
-    bool isValid0(int a, int b, const std::vector<int> &test);
-    bool isValid1or2(int a, int b, const std::vector<int> &test);
-    bool isValid3(int a, int b, const std::vector<int> &test);
-};
 
 void cInstance::clear()
 {
@@ -131,19 +135,6 @@ void cInstance::show()
     std::cout << "\n";
 }
 
-bool cInstance::isValid0(int a, int b, const std::vector<int> &test)
-{
-    for (int v : test)
-        if (a == v || b == v)
-            return true;
-
-    std::cout << "isValid0 failed, neither " << vPersons[a] << " " << vPersons[b] << " in\n";
-    for (int v : test)
-        std::cout << vPersons[v] << " ";
-    std::cout << "\n";
-
-    return false;
-}
 bool cInstance::isValid1or2(int a, int b, const std::vector<int> &test)
 {
     if (std::find(test.begin(), test.end(), a) == test.end())
@@ -153,7 +144,7 @@ bool cInstance::isValid1or2(int a, int b, const std::vector<int> &test)
         {
             // b is included
 
-            //std::cout << "isValid1or2 failed " << vPersons[a] << " excluded " << vPersons[b] << " included\n";
+            // std::cout << "isValid1or2 failed " << vPersons[a] << " excluded " << vPersons[b] << " included\n";
 
             return false;
         }
